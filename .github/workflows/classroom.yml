@@ -10,7 +10,7 @@ permissions:
 
 
 jobs:
-  get-workflow-id:
+  get-workflow-run-by-push:
     outputs:
       run_id: ${{steps.get_workflow.outputs.run_id}}
     runs-on: ubuntu-latest
@@ -22,25 +22,54 @@ jobs:
         with:
             workflow-file: '02-workflow-events.yml'    
             status: 'success'
+            event: 'push'
 
-  checkJob:   
-    needs: get-workflow-id
-    runs-on: ubuntu-latest    
-    outputs: 
-      stepsExecuted: ${{steps.check_Steps_for_JOB.outputs.stepsExecuted}}
-    steps:     
- 
-      - name: Check step executed for JOB
-        id: check_Steps_for_JOB
-        uses: madBabel/check-jobs-steps-gha-action@v2
+  get-workflow-run-by-workflow_dispatch:
+    outputs:
+      run_id: ${{steps.get_workflow.outputs.run_id}}
+    runs-on: ubuntu-latest
+
+    steps:          
+      - name: Get workFlow Run
+        id: get_workflow
+        uses: madBabel/get-run-id-of-wf-action@test
         with:
-          run-id: ${{needs.get-workflow-id.outputs.run_id}}
-          job-to-execute: Saludo
-          steps-to-execute: echo-hello-world
+            workflow-file: '02-workflow-events.yml'    
+            status: 'success'
+            event: 'workflow_dispatch' 
+
+  get-workflow-run-by-schedule:
+    outputs:
+      run_id: ${{steps.get_workflow.outputs.run_id}}
+    runs-on: ubuntu-latest
+
+    steps:          
+      - name: Get workFlow Run
+        id: get_workflow
+        uses: madBabel/get-run-id-of-wf-action@test
+        with:
+            workflow-file: '02-workflow-events.yml'    
+            status: 'success'
+            event: 'schedule' 
+  
+  get-workflow-run-by-pull_request:
+    outputs:
+      run_id: ${{steps.get_workflow.outputs.run_id}}
+    runs-on: ubuntu-latest
+
+    steps:          
+      - name: Get workFlow Run
+        id: get_workflow
+        uses: madBabel/get-run-id-of-wf-action@test
+        with:
+            workflow-file: '02-workflow-events.yml'    
+            status: 'success'
+            event: 'pull_request' 
+
             
 
   autograding-reporter:    
-      needs: [checkJob]
+      #needs: [checkJob]
       runs-on: ubuntu-latest    
       steps:           
       - name: Run Autograding Step Tests for HEL
