@@ -20,7 +20,7 @@ jobs:
         id: get_workflow
         uses: madBabel/get-run-id-of-wf-action@test
         with:
-            workflow-file: '02-workflow-events.yml'    
+            workflow-file: '02-workflow-events.yaml'    
             status: 'success'
 
   checkJob:   
