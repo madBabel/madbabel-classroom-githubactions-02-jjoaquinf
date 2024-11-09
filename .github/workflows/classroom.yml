@@ -48,7 +48,7 @@ jobs:
         id: get_workflow
         uses: madBabel/get-run-id-of-wf-action@test
         with:
-            workflow-file: '02-workflow-events.yml'    
+            workflow-file: '02-workflow-events.yaml'    
             status: 'success'
             event: 'schedule' 
   
@@ -69,23 +69,55 @@ jobs:
             
 
   autograding-reporter:    
-      #needs: [checkJob]
+      needs: [get-workflow-run-by-pull_request,get-workflow-run-by-push,get-workflow-run-by-schedule,get-workflow-run-by-workflow_dispatch]
       runs-on: ubuntu-latest    
       steps:           
-      - name: Run Autograding Step Tests for HEL
-        uses: classroom-resources/autograding-io-grader@v1      
+      - uses: classroom-resources/autograding-io-grader@v1      
         id: test1
         with:
             test-name: 'Test Step executed'   
-            command: 'echo ${{needs.checkJob.outputs.stepsExecuted}}'
+            command: 'echo ${{needs.get-workflow-run-by-pull_request.outputs.run_id}}'
             input: ''
-            expected-output: 'true'
-            comparison-method: 'exact'  
-            max-score: 100
+            expected-output: '[0-9]+[0-9]+'
+            comparison-method: 'regex'  
+            max-score: 25
             
+      - uses: classroom-resources/autograding-io-grader@v1      
+        id: test2
+        with:
+            test-name: 'Test Step executed'   
+            command: 'echo ${{needs.get-workflow-run-by-push.outputs.run_id}}'
+            input: ''
+            expected-output: '[0-9]+[0-9]+'
+            comparison-method: 'regex'  
+            max-score: 25
+      
+      - uses: classroom-resources/autograding-io-grader@v1      
+        id: test3
+        with:
+            test-name: 'Test Step executed'   
+            command: 'echo ${{needs.get-workflow-run-by-schedule.outputs.run_id}}'
+            input: ''
+            expected-output: '[0-9]+[0-9]+'
+            comparison-method: 'regex'  
+            max-score: 25
+
+      - uses: classroom-resources/autograding-io-grader@v1      
+        id: test4
+        with:
+            test-name: 'Test Step executed'   
+            command: 'echo ${{needs.get-workflow-run-by-workflow_dispatch.outputs.run_id}}'
+            input: ''
+            expected-output: '[0-9]+[0-9]+'
+            comparison-method: 'regex'  
+            max-score: 25
+
       - name: Autograding Reporter
         uses: classroom-resources/autograding-grading-reporter@v1     
         with:
-           runners: test1
+           runners: test1,test2,test3,test4
         env:
-          TEST1_RESULTS: "${{ steps.test1.outputs.result }}"      
+          TEST1_RESULTS: "${{ steps.test1.outputs.result }}"   
+          TEST2_RESULTS: "${{ steps.test2.outputs.result }}"   
+          TEST3_RESULTS: "${{ steps.test3.outputs.result }}"  
+          TEST4_RESULTS: "${{ steps.test4.outputs.result }}"   
