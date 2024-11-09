@@ -1,7 +1,7 @@
 name: Autograding Tests
 on:
   push:
-     branches: [feedback]
+     branches: [feedback,main]
   repository_dispatch:
 permissions:
   checks: write
@@ -18,9 +18,9 @@ jobs:
     steps:          
       - name: Get workFlow Run
         id: get_workflow
-        uses: madBabel/get-run-id-of-wf-action@v2
+        uses: madBabel/get-run-id-of-wf-action@test
         with:
-            workflow-file: 'workflow.yml'    
+            workflow-file: '02-workflow-events.yml'    
             status: 'success'
 
   checkJob:   
