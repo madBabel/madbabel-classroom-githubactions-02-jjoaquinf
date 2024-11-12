@@ -1,7 +1,10 @@
 name: Autograding Tests
 on:
-  push:
-     branches: [feedback]
+  pull_request:  
+     types: 
+       - closed
+     branches: 
+       - feedback        
   repository_dispatch:
 permissions:
   checks: write
