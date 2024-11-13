@@ -1,7 +1,5 @@
 name: Autograding Tests
-on:
-  push:
-     branches: [feedback]
+on:    
   repository_dispatch:
 permissions:
   checks: write
@@ -18,7 +16,7 @@ jobs:
     steps:          
       - name: Get workFlow Run
         id: get_workflow
-        uses: madBabel/get-run-id-of-wf-action@test
+        uses: madBabel/get-run-id-of-wf-action@v3
         with:
             workflow-file: '02-workflow-events.yaml'    
             status: 'success'
@@ -32,7 +30,7 @@ jobs:
     steps:          
       - name: Get workFlow Run
         id: get_workflow
-        uses: madBabel/get-run-id-of-wf-action@test
+        uses: madBabel/get-run-id-of-wf-action@v3
         with:
             workflow-file: '02-workflow-events.yaml'    
             status: 'success'
@@ -46,7 +44,7 @@ jobs:
     steps:          
       - name: Get workFlow Run
         id: get_workflow
-        uses: madBabel/get-run-id-of-wf-action@test
+        uses: madBabel/get-run-id-of-wf-action@v3
         with:
             workflow-file: '02-workflow-events.yaml'    
             status: 'success'
@@ -60,7 +58,7 @@ jobs:
     steps:          
       - name: Get workFlow Run
         id: get_workflow
-        uses: madBabel/get-run-id-of-wf-action@test
+        uses: madBabel/get-run-id-of-wf-action@v3
         with:
             workflow-file: '02-workflow-events.yaml'    
             status: 'success'
