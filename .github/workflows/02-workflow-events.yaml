@@ -1,0 +1,9 @@
+name: "HELLO WORLD"
+on: "push"
+
+jobs:
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Show Trigger"
+      -  run: echo "event name is:" ${{ github.event_name }} 
